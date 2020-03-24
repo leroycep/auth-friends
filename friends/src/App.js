@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
-import { FRIENDS_API, FRIENDS_ROUTE, LOGIN_ROUTE } from "./constants";
+import {
+  TOKEN_KEY,
+  FRIENDS_API,
+  FRIENDS_ROUTE,
+  LOGIN_ROUTE,
+  NEW_FRIEND_ROUTE
+} from "./constants";
 import { axiosWithAuth } from "./utils/axiosWithAuth";
 import PrivateRoute from "./components/PrivateRoute";
+import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Friends from "./components/Friends";
 import FriendForm from "./components/FriendForm";
@@ -34,8 +41,11 @@ function App() {
     fetchFriends();
   }, []);
 
+  const loggedIn = window.localStorage.getItem(TOKEN_KEY) !== undefined;
+
   return (
     <>
+      {loggedIn && <Navbar />}
       <Switch>
         <Route path={LOGIN_ROUTE} component={Login} />
         <PrivateRoute
@@ -45,7 +55,7 @@ function App() {
         />
         <PrivateRoute
           exact
-          path={`${FRIENDS_ROUTE}/new`}
+          path={NEW_FRIEND_ROUTE}
           render={props => <FriendForm {...props} addFriend={addFriend} />}
         />
         <PrivateRoute
