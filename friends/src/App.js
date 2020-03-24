@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Link, Switch, Route, } from "react-router-dom";
+import { Link, Switch, Route } from "react-router-dom";
 
 import {
   TOKEN_KEY,
   FRIENDS_API,
   FRIENDS_ROUTE,
   LOGIN_ROUTE,
-  NEW_FRIEND_ROUTE
+  NEW_FRIEND_ROUTE,
+  EDIT_FRIEND_ROUTE
 } from "./constants";
 import { axiosWithAuth } from "./utils/axiosWithAuth";
 import PrivateRoute from "./components/PrivateRoute";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Friends from "./components/Friends";
-import FriendForm from "./components/FriendForm";
+import NewFriend from "./components/NewFriendForm";
+import EditFriend from "./components/EditFriendForm";
 import FriendPage from "./components/FriendPage";
 
 function App() {
@@ -46,6 +48,15 @@ function App() {
       .catch(err => console.log("Failed to delete friend from API", err));
   };
 
+  const editFriend = (friendId, values) => {
+    return axiosWithAuth()
+      .put(`${FRIENDS_API}/${friendId}`, values)
+      .then(res => {
+        setFriends(res.data);
+      })
+      .catch(err => console.log("Failed to delete friend from API", err));
+  };
+
   useEffect(() => {
     fetchFriends();
   }, []);
@@ -65,12 +76,25 @@ function App() {
         <PrivateRoute
           exact
           path={NEW_FRIEND_ROUTE}
-          render={props => <FriendForm {...props} addFriend={addFriend} />}
+          render={props => <NewFriend {...props} addFriend={addFriend} />}
+        />
+        <PrivateRoute
+          exact
+          path={`${EDIT_FRIEND_ROUTE}/:id`}
+          render={props => (
+            <EditFriend {...props} friends={friends} editFriend={editFriend} />
+          )}
         />
         <PrivateRoute
           exact
           path={`${FRIENDS_ROUTE}/:id`}
-          render={props => <FriendPage {...props} friends={friends} deleteFriend={deleteFriend} />}
+          render={props => (
+            <FriendPage
+              {...props}
+              friends={friends}
+              deleteFriend={deleteFriend}
+            />
+          )}
         />
 
         {/* Make other routes redirect to /friends */}

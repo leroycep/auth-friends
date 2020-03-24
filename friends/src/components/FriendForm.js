@@ -5,17 +5,14 @@ import { useForm } from "react-hook-form";
 import { FRIENDS_ROUTE } from "../constants";
 
 function FriendForm(props) {
-  const { register, handleSubmit } = useForm();
-  const history = useHistory();
-
-  const onSubmit = values => {
-    props.addFriend(values).then(res => history.push(FRIENDS_ROUTE));
-  };
+  const { register, handleSubmit } = useForm({
+    defaultValues: props.defaultValues
+  });
 
   return (
     <div>
       <h2>New Friend</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(props.onSubmit)}>
         <label>
           Name: <input ref={register} name="name" type="text" />
         </label>

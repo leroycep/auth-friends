@@ -2,6 +2,7 @@ export const TOKEN_KEY = "token";
 
 export const FRIENDS_ROUTE = "/friends";
 export const NEW_FRIEND_ROUTE = `${FRIENDS_ROUTE}/new`;
+export const EDIT_FRIEND_ROUTE = `${FRIENDS_ROUTE}/edit`;
 export const LOGIN_ROUTE = "/login";
 
 export const API_BASE = "http://localhost:5000/api";
