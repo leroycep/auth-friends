@@ -1,19 +1,36 @@
-import React from "react";
-import { Switch, Route, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { TOKEN_KEY } from "../constants";
 
 function Login() {
   const { handleSubmit, register } = useForm();
+  const history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = values => {
-      console.log(values);
+    setIsLoading(true);
+    axios
+      .post("http://localhost:5000/api/login", values)
+      .then(res => {
+        window.localStorage.setItem(TOKEN_KEY, res.data.payload);
+        setIsLoading(false);
+        history.push("/");
+      })
+      .catch(err => console.log(err));
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input ref={register} name="username" type="text" />
-      <input ref={register} name="password" type="password" />
-      <input type="submit" />
+      <label>
+        Username: <input ref={register} name="username" type="text" />
+      </label>
+      <label>
+        Password: <input ref={register} name="password" type="password" />
+      </label>
+      <input type="submit" disabled={isLoading} />
+      {isLoading && <p>Loading...</p>}
     </form>
   );
 }
