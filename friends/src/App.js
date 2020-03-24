@@ -6,6 +6,7 @@ import { axiosWithAuth } from "./utils/axiosWithAuth";
 import PrivateRoute from "./components/PrivateRoute";
 import Login from "./components/Login";
 import Friends from "./components/Friends";
+import FriendForm from "./components/FriendForm";
 import FriendPage from "./components/FriendPage";
 
 function App() {
@@ -14,6 +15,15 @@ function App() {
   const fetchFriends = () => {
     axiosWithAuth()
       .get(FRIENDS_API)
+      .then(res => {
+        setFriends(res.data);
+      })
+      .catch(err => console.log("Failed to get friends from API", err));
+  };
+
+  const addFriend = newFriend => {
+    return axiosWithAuth()
+      .post(FRIENDS_API, newFriend)
       .then(res => {
         setFriends(res.data);
       })
@@ -32,6 +42,11 @@ function App() {
           exact
           path={FRIENDS_ROUTE}
           render={props => <Friends {...props} friends={friends} />}
+        />
+        <PrivateRoute
+          exact
+          path={`${FRIENDS_ROUTE}/new`}
+          render={props => <FriendForm {...props} addFriend={addFriend} />}
         />
         <PrivateRoute
           exact
