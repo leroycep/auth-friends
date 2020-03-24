@@ -20,14 +20,11 @@ function FriendPage(props) {
 
   return (
     <div>
-      <h2>New Friend</h2>
-      <div>
-        <h2>friend.name</h2>
-        <ul>
-          <li>Age: {friend.age}</li>
-          <li>E-Mail: {friend.email}</li>
-        </ul>
-      </div>
+      <h2>{friend.name}</h2>
+      <ul>
+        <li>Age: {friend.age}</li>
+        <li>E-Mail: {friend.email}</li>
+      </ul>
     </div>
   );
 }
