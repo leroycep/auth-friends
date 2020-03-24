@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { TOKEN_KEY } from "../constants";
+
+import { TOKEN_KEY, LOGIN_API } from "../constants";
 
 function Login() {
   const { handleSubmit, register } = useForm();
@@ -12,7 +13,7 @@ function Login() {
   const onSubmit = values => {
     setIsLoading(true);
     axios
-      .post("http://localhost:5000/api/login", values)
+      .post(LOGIN_API, values)
       .then(res => {
         window.localStorage.setItem(TOKEN_KEY, res.data.payload);
         setIsLoading(false);

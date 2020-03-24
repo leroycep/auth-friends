@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import { FRIENDS_API } from "../constants";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 function Friends() {
@@ -7,7 +8,7 @@ function Friends() {
 
   useEffect(() => {
     axiosWithAuth()
-      .get("http://localhost:5000/api/friends")
+      .get(FRIENDS_API)
       .then(res => {
         setFriends(res.data);
       })
