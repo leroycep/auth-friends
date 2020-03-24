@@ -1,11 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 function Friends(props) {
-  console.log(props);
-  useEffect(() => {
-    props.fetchFriends();
-  }, []);
-
   return (
     <div>
       <h2>Friends</h2>
