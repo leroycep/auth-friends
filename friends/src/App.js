@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Link, Switch, Route, } from "react-router-dom";
 
 import {
   TOKEN_KEY,
@@ -37,6 +37,15 @@ function App() {
       .catch(err => console.log("Failed to get friends from API", err));
   };
 
+  const deleteFriend = friendId => {
+    return axiosWithAuth()
+      .delete(`${FRIENDS_API}/${friendId}`)
+      .then(res => {
+        setFriends(res.data);
+      })
+      .catch(err => console.log("Failed to delete friend from API", err));
+  };
+
   useEffect(() => {
     fetchFriends();
   }, []);
@@ -61,12 +70,12 @@ function App() {
         <PrivateRoute
           exact
           path={`${FRIENDS_ROUTE}/:id`}
-          render={props => <FriendPage {...props} friends={friends} />}
+          render={props => <FriendPage {...props} friends={friends} deleteFriend={deleteFriend} />}
         />
 
         {/* Make other routes redirect to /friends */}
         <PrivateRoute path="/">
-          <Redirect to={FRIENDS_ROUTE} />
+          Uknown page: <Link to={FRIENDS_ROUTE}>Return to friends list</Link>
         </PrivateRoute>
       </Switch>
     </>
