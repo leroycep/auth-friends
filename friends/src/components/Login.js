@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
-import { TOKEN_KEY, LOGIN_API } from "../constants";
+import { TOKEN_KEY, LOGIN_API, FRIENDS_ROUTE } from "../constants";
 
 function Login() {
   const { handleSubmit, register } = useForm();
@@ -17,7 +17,7 @@ function Login() {
       .then(res => {
         window.localStorage.setItem(TOKEN_KEY, res.data.payload);
         setIsLoading(false);
-        history.push("/");
+        history.push(FRIENDS_ROUTE);
       })
       .catch(err => console.log(err));
   };
